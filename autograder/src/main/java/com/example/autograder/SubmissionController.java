@@ -1,6 +1,6 @@
 package com.example.autograder;
 
-import com.example.autograder.jobitems.*;
+import com.example.autograder.JobItems.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,9 @@ public class SubmissionController {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @PostMapping("/submit")
     public String uploadFile(@RequestParam("file") MultipartFile file)
@@ -49,7 +53,12 @@ public class SubmissionController {
 
         jobRepository.save(job);
 
-        System.out.println(getAllUsers());
+        redisTemplate
+            .opsForList()
+            .rightPush(
+                "queue_" + fileName.split(".")[1],
+                "Job ID: " + job.getId()
+            );
 
         return "Upload successful!";
     }

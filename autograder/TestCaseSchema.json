@@ -1,0 +1,42 @@
+[
+  {
+    "input": "Output 1",
+    "expected_output": "Expected Output 1"
+  },
+  {
+    "input": "Output 2",
+    "expected_output": "Expected Output 2"
+  },
+  {
+    "input": "Output 3",
+    "expected_output": "Expected Output 3"
+  },
+  {
+    "input": "Output 4",
+    "expected_output": "Expected Output 4"
+  },
+  {
+    "input": "Output 5",
+    "expected_output": "Expected Output 5"
+  },
+  {
+    "input": "Output 6",
+    "expected_output": "Expected Output 6"
+  },
+  {
+    "input": "Output 7",
+    "expected_output": "Expected Output 7"
+  },
+  {
+    "input": "Output 8",
+    "expected_output": "Expected Output 8"
+  },
+  {
+    "input": "Output 9",
+    "expected_output": "Expected Output 9"
+  },
+  {
+    "input": "Output 10",
+    "expected_output": "Expected Output 10"
+  }
+]
