@@ -1,16 +1,40 @@
 package com.example.autograder;
 
+import com.example.autograder.jobitems.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class SubmissionController {
 
+    private final Path rootLocation = Paths.get("uploads");
+
+    @Autowired
+    private JobRepository jobRepository;
+
     @PostMapping("/submit")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
+    public String uploadFile(@RequestParam("file") MultipartFile file)
+        throws IOException {
         if (file.isEmpty()) return "empty file...";
 
+        Files.createDirectories(rootLocation);
+
         String fileName = file.getOriginalFilename();
+        String randomFileName =
+            "" + UUID.randomUUID().toString() + "_" + fileName;
+
+        Files.copy(
+            file.getInputStream(),
+            rootLocation.resolve(randomFileName),
+            StandardCopyOption.REPLACE_EXISTING
+        );
 
         try {
             byte[] bytes = file.getBytes();
@@ -21,6 +45,18 @@ public class SubmissionController {
             return e.toString();
         }
 
+        Job job = new Job("" + UUID.randomUUID().toString() + "_" + fileName);
+
+        jobRepository.save(job);
+
+        System.out.println(getAllUsers());
+
         return "Upload successful!";
+    }
+
+    @GetMapping(path = "/all")
+    public @ResponseBody Iterable<Job> getAllUsers() {
+        // This returns a JSON or XML with the users
+        return jobRepository.findAll();
     }
 }
