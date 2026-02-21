@@ -1,4 +1,4 @@
-package com.example.autograder.jobitems;
+package com.example.autograder.JobItems;
 
 import org.springframework.data.repository.CrudRepository;
 
