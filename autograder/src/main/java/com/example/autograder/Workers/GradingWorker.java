@@ -1,6 +1,7 @@
 package com.example.autograder.Workers;
 
 import com.example.autograder.JobItems.*;
+import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -38,6 +39,11 @@ public abstract class GradingWorker {
             }
         })
             .start();
+    }
+
+    @PostConstruct
+    public void init() {
+        this.startGradingLoop();
     }
 
     protected abstract Integer[] runCode(String filePath);

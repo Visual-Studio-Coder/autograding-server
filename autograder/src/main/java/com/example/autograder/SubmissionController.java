@@ -31,8 +31,10 @@ public class SubmissionController {
         Files.createDirectories(rootLocation);
 
         String fileName = file.getOriginalFilename();
-        String randomFileName =
-            "" + UUID.randomUUID().toString() + "_" + fileName;
+
+        var uuid = UUID.randomUUID();
+
+        String randomFileName = "" + uuid.toString() + "_" + fileName;
 
         Files.copy(
             file.getInputStream(),
@@ -49,15 +51,15 @@ public class SubmissionController {
             return e.toString();
         }
 
-        Job job = new Job("" + UUID.randomUUID().toString() + "_" + fileName);
+        Job job = new Job("" + uuid.toString() + "_" + fileName);
 
         jobRepository.save(job);
 
         redisTemplate
             .opsForList()
             .rightPush(
-                "queue_" + fileName.split(".")[1],
-                "Job ID: " + job.getId()
+                "queue_" + fileName.split("\\.")[1],
+                job.getId().toString()
             );
 
         return "Upload successful!";
