@@ -51,6 +51,8 @@ public class JavaWorker extends GradingWorker {
                     "docker",
                     "run",
                     "--rm",
+                    "--memory=512m",
+                    "--cpus=1.0",
                     "-v",
                     jobDir.toAbsolutePath().toString() + ":/app",
                     "-w",
