@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <body>
+        <h2>Live Autograder</h2>
+        <div id="messages"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+        <script>
+            var socket = new SockJS("/ws");
+            var stompClient = Stomp.over(socket);
+
+            stompClient.connect({}, function (frame) {
+                console.log("Connected: " + frame);
+                // Listen for updates
+                stompClient.subscribe("/topic/updates", function (message) {
+                    // Show message on screen
+                    var div = document.getElementById("messages");
+                    div.innerHTML += "<p>" + message.body + "</p>";
+                });
+            });
+        </script>
+    </body>
+</html>
