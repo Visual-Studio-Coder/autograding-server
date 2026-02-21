@@ -17,6 +17,10 @@ public abstract class GradingWorker {
     @Autowired
     private StringRedisTemplate redis;
 
+    public StringRedisTemplate getRedis() {
+        return redis;
+    }
+
     @Autowired
     private JobRepository jobRepository;
 

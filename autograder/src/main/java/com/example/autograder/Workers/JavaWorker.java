@@ -85,6 +85,10 @@ public class JavaWorker extends GradingWorker {
                         results[i] = 0; // FAIL
                     }
                 }
+
+                String message =
+                    jobId + ":" + i + ":" + (results[i] == 2 ? "PASS" : "FAIL");
+                getRedis().convertAndSend("job_updates", message);
             }
         } catch (Exception e) {
             e.printStackTrace();
